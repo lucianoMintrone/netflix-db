@@ -1,4 +1,3 @@
-
 CREATE DATABASE `netflix` DEFAULT CHARACTER SET utf8;
 
 
@@ -275,12 +274,111 @@ CREATE TABLE `netflix`.`likes` (
     REFERENCES `netflix`.`profiles` (`name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-
-
-
-
-
-
     
-    
-    
+CREATE TABLE `netflix`.`recommendations` (
+  `material_title` VARCHAR(256) NOT NULL,
+  `profile_name` VARCHAR(256) NOT NULL,
+  `similarity` INT NOT NULL,
+  PRIMARY KEY (`material_title`, `profile_name`),
+  UNIQUE INDEX `material_title_profile_name_UNIQUE` (`material_title` ASC, `profile_name` ASC),
+  INDEX `profile_name_recommendations_idx` (`profile_name` ASC),
+  CONSTRAINT `material_title_reccomendations`
+    FOREIGN KEY (`material_title`)
+    REFERENCES `netflix`.`materials` (`title`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `profile_name_recommendations`
+    FOREIGN KEY (`profile_name`)
+    REFERENCES `netflix`.`profiles` (`name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `netflix`.`directors` (
+  `material_title` VARCHAR(256) NOT NULL,
+  `people_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`material_title`, `people_name`),
+  UNIQUE INDEX `material_title_people_name_UNIQUE` (`material_title` ASC, `people_name` ASC),
+  INDEX `people_name_directors_idx` (`people_name` ASC),
+  CONSTRAINT `material_title_directors`
+    FOREIGN KEY (`material_title`)
+    REFERENCES `netflix`.`materials` (`title`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `people_name_directors`
+    FOREIGN KEY (`people_name`)
+    REFERENCES `netflix`.`people` (`name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `netflix`.`filmmakers` (
+  `material_title` VARCHAR(256) NOT NULL,
+  `people_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`material_title`, `people_name`),
+  UNIQUE INDEX `material_title_people_name_UNIQUE` (`material_title` ASC, `people_name` ASC),
+  INDEX `people_name_filmmakers_idx` (`people_name` ASC),
+  CONSTRAINT `material_title_filmmakers`
+    FOREIGN KEY (`material_title`)
+    REFERENCES `netflix`.`materials` (`title`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `people_name_filmmakers`
+    FOREIGN KEY (`people_name`)
+    REFERENCES `netflix`.`people` (`name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `netflix`.`screenwriters` (
+  `material_title` VARCHAR(256) NOT NULL,
+  `people_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`material_title`, `people_name`),
+  UNIQUE INDEX `material_title_people_name_UNIQUE` (`material_title` ASC, `people_name` ASC),
+  INDEX `people_name_screenwriters_idx` (`people_name` ASC),
+  CONSTRAINT `material_title_screenwriters`
+    FOREIGN KEY (`material_title`)
+    REFERENCES `netflix`.`materials` (`title`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `people_name_screenwriters`
+    FOREIGN KEY (`people_name`)
+    REFERENCES `netflix`.`people` (`name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `netflix`.`interpreters` (
+  `material_title` VARCHAR(256) NOT NULL,
+  `people_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`material_title`, `people_name`),
+  UNIQUE INDEX `material_title_people_name_UNIQUE` (`material_title` ASC, `people_name` ASC),
+  INDEX `people_name_interpreters_idx` (`people_name` ASC),
+  CONSTRAINT `material_title_interpreters`
+    FOREIGN KEY (`material_title`)
+    REFERENCES `netflix`.`materials` (`title`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `people_name_interpreters`
+    FOREIGN KEY (`people_name`)
+    REFERENCES `netflix`.`people` (`name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `netflix`.`playbacks` (
+  `profile_name` VARCHAR(256) NOT NULL,
+  `ref_title` VARCHAR(256) NOT NULL,
+  `ref_type` VARCHAR(45) NOT NULL,
+  `minutes` INT NOT NULL,
+  PRIMARY KEY (`profile_name`, `ref_title`, `ref_type`),
+  INDEX `profile_name_playbacks_idx` (`profile_name` ASC),
+  UNIQUE INDEX `playbacks_UNIQUE` (`profile_name` ASC, `ref_type` ASC, `ref_title` ASC),
+  CONSTRAINT `profile_name_playbacks`
+    FOREIGN KEY (`profile_name`)
+    REFERENCES `netflix`.`profiles` (`name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `netflix`.`film_ratings` (
+  `ref_title` VARCHAR(256) NOT NULL,
+  `ref_type` VARCHAR(45) NOT NULL,
+  `type` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`ref_title`, `ref_type`),
+  UNIQUE INDEX `film_ratings_UNIQUE` (`ref_type` ASC, `ref_title` ASC));
+
